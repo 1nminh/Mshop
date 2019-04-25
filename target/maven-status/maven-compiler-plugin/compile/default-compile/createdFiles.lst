@@ -1,0 +1,17 @@
+service\BannerService.class
+config\PersistenceJPAConfig.class
+controller\UserController.class
+model\Banner.class
+service\UserService.class
+config\AppInitializer.class
+repository\EvaluateRepository.class
+repository\RoleRepository.class
+service\EvaluateService.class
+model\Evaluate.class
+model\Role.class
+repository\UserRepository.class
+config\WebMvcConfig.class
+repository\BannerRepository.class
+exception\ResourceNotFoundException.class
+service\RoleService.class
+model\User.class
