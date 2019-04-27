@@ -2,39 +2,17 @@ package spring.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import spring.exception.ResourceNotFoundException;
 import spring.model.Banner;
-import spring.repository.BannerRepository;
 
-@Service
-public class BannerService {
+public interface BannerService {
 
-	@Autowired
-	private BannerRepository bannerRepository;
-	
-	@Transactional
-	public List<Banner> getBanners() {
-		return bannerRepository.findAll();
-	}
+	public List<Banner> getBanners();
 
-	@Transactional
-	public void saveBanner(Banner theBanner) {
-		bannerRepository.save(theBanner);
-	}
+	public void saveBanner(Banner theBanner);
 
-	@Transactional
-	public Banner getBanner(int id) throws ResourceNotFoundException {
-		return bannerRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(id));
-	}
+	public Banner getBanner(int theId) throws ResourceNotFoundException;
 
-	@Transactional
-	public void deleteBanner(int theId) {
-		bannerRepository.deleteById(theId);
-	}
-    
+	public void deleteBanner(int theId) throws ResourceNotFoundException;
+
 }

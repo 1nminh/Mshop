@@ -26,12 +26,21 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer roleId;
-	
+
 	@Column
 	private String roleName;
-	
+
 	@OneToMany(mappedBy = "role")
-    private Collection<User> users;
+	private Collection<User> users;
+
+	public Role() {
+	}
+
+//	public Role(String roleName, Collection<User> users) {
+//		super();
+//		this.roleName = roleName;
+//		this.users = users;
+//	}
 
 	public Integer getRoleId() {
 		return roleId;
@@ -56,7 +65,5 @@ public class Role {
 	public void setUsers(Collection<User> users) {
 		this.users = users;
 	}
-
-	
 
 }
