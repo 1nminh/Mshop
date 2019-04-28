@@ -1,79 +1,48 @@
-/**
- * 
- */
 package spring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.ResourceNotFoundException;
 import spring.model.Banner;
-import spring.service.BannerServiceImpl;
-
-/**
- * @author Le Ngo Minh <br/>
- *
- *         Modified Date : Apr 25, 2019
- */
+import spring.service.BannerService;
 
 @RestController
 @RequestMapping("/api/banner")
 public class BannerController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(BannerController.class);
-
 	@Autowired
-	private BannerServiceImpl bannerService;
+	private BannerService service;
 
-	@GetMapping()
-//	@ResponseBody
-	public List<Banner> listBanners() {
-
-		List<Banner> bannerList = new ArrayList<Banner>();
-		bannerList = bannerService.getBanners();
-
-		return bannerList;
+	@GetMapping("/all")
+	public List<Banner> all() {
+		return service.all();
 	}
 
-	@GetMapping("/getBanner")
-	public Banner getBanner(@RequestParam("bannerId") int theId) throws ResourceNotFoundException {
-
-		Banner banner = new Banner();
-		banner = bannerService.getBanner(theId);
-
-		return banner;
+	@PostMapping("/add")
+	public Banner newBanner(@Valid @RequestBody Banner newBanner, BindingResult bindingResult) {
+		return service.newBanner(newBanner, bindingResult);
 	}
 
-	@PostMapping("/saveBanner")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void saveBanner(@ModelAttribute("banner") Banner theBanner) {
-		bannerService.saveBanner(theBanner);
+	@GetMapping("get/{id}")
+	public Banner one(@PathVariable("id") int id) throws ResourceNotFoundException {
+		return service.one(id);
 	}
 
-	@GetMapping("/updateBanner")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void showFormForUpdate(@RequestParam("bannerId") int theId, Model theModel) throws ResourceNotFoundException {
-		Banner theBanner = new Banner();
-		bannerService.getBanner(theId);
+	@DeleteMapping("/delete/{id}")
+	void deleteBanner(@PathVariable int id) {
+		service.deleteBanner(id);
 	}
-
-	@GetMapping("/delete")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void deleteBanner(@RequestParam("bannerId") int theId) throws ResourceNotFoundException {
-		bannerService.deleteBanner(theId);
-	}
-
 }

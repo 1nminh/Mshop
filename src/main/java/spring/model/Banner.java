@@ -28,6 +28,9 @@ public class Banner {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bannerId;
 
+	@Column
+	private String bannerName;
+	
 	@Column(columnDefinition = "LONGTEXT")
 	private String photoBase64;
 
@@ -40,6 +43,14 @@ public class Banner {
 
 	public void setBannerId(Integer bannerId) {
 		this.bannerId = bannerId;
+	}
+
+	public String getBannerName() {
+		return bannerName;
+	}
+
+	public void setBannerName(String bannerName) {
+		this.bannerName = bannerName;
 	}
 
 	public String getPhotoBase64() {
@@ -57,6 +68,8 @@ public class Banner {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
+
+	
 	
 	
 

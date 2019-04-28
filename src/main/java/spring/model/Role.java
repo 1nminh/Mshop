@@ -5,7 +5,7 @@
  */
 package spring.model;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
@@ -30,17 +32,18 @@ public class Role {
 	@Column
 	private String roleName;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "role")
-	private Collection<User> users;
+	private List<User> users;
 
 	public Role() {
 	}
 
-//	public Role(String roleName, Collection<User> users) {
-//		super();
-//		this.roleName = roleName;
-//		this.users = users;
-//	}
+	public Role(String roleName, List<User> users) {
+		super();
+		this.roleName = roleName;
+		this.users = users;
+	}
 
 	public Integer getRoleId() {
 		return roleId;
@@ -58,11 +61,11 @@ public class Role {
 		this.roleName = roleName;
 	}
 
-	public Collection<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 

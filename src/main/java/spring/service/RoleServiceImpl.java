@@ -14,31 +14,70 @@ import spring.repository.RoleRepository;
 public class RoleServiceImpl implements RoleService {
 
 	@Autowired
-	private RoleRepository roleRepository;
-	
+	private RoleRepository repository;
+
 	@Transactional
 	@Override
-	public List<Role> getRoles() {
-		return roleRepository.findAll();
+	public List<Role> all() {
+		return repository.findAll();
 	}
 
 	@Transactional
 	@Override
-	public void saveRole(Role theRole) {
-		roleRepository.save(theRole);
+	public Role newRole(Role newRole) {
+		return repository.save(newRole);
 	}
 
 	@Transactional
 	@Override
-	public Role getRole(int id) throws ResourceNotFoundException {
-		return roleRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(id));
+	public Role one(int id) throws ResourceNotFoundException {
+		return repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	@Transactional
 	@Override
-	public void deleteRole(int theId) {
-		roleRepository.deleteById(theId);
+	public Role replaceRole(Role newRole, int id) {
+		return repository.findById(id)
+			      .map(role -> {
+			        role.setRoleName(newRole.getRoleName());
+			        return repository.save(role);
+			      })
+			      .orElseGet(() -> {
+			        newRole.setRoleId(id);
+			        return repository.save(newRole);
+			      });
 	}
-    
+
+	@Transactional
+	@Override
+	public void deleteRole(int id) {
+		repository.deleteById(id);
+	}
+
+//	@Transactional
+//	@Override
+//	public List<Role> all() {
+//		return roleRepository.findAll();
+//	}
+//
+//	@Transactional
+//	@Override
+//	public void saveRole(Role theRole) {
+//		roleRepository.save(theRole);
+//	}
+//
+//	@Transactional
+//	@Override
+//	public Role getRole(int id) throws ResourceNotFoundException {
+//		return roleRepository.findById(id).orElseThrow(
+//				() -> new ResourceNotFoundException(id));
+//	}
+//
+//	@Transactional
+//	@Override
+//	public void deleteRole(int theId) {
+//		roleRepository.deleteById(theId);
+//	}
+
 }

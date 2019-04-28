@@ -1,79 +1,50 @@
-/**
- * 
- */
 package spring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.ResourceNotFoundException;
 import spring.model.Evaluate;
-import spring.service.EvaluateServiceImpl;
-
-/**
- * @author Le Ngo Minh <br/>
- *
- *         Modified Date : Apr 25, 2019
- */
+import spring.service.EvaluateService;
 
 @RestController
 @RequestMapping("/api/evaluate")
 public class EvaluateController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(EvaluateController.class);
-
 	@Autowired
-	private EvaluateServiceImpl evaluateService;
+	private EvaluateService service;
 
-	@GetMapping()
-//	@ResponseBody
-	public List<Evaluate> listEvaluates() {
-
-		List<Evaluate> evaluateList = new ArrayList<Evaluate>();
-		evaluateList = evaluateService.getEvaluates();
-
-		return evaluateList;
+	@GetMapping("/all")
+	public List<Evaluate> all() {
+		return service.all();
 	}
 
-	@GetMapping("/getEvaluate")
-	public Evaluate getEvaluate(@RequestParam("evaluateId") int theId) throws ResourceNotFoundException {
-
-		Evaluate evaluate = new Evaluate();
-		evaluate = evaluateService.getEvaluate(theId);
-
-		return evaluate;
+	@PostMapping("/add")
+	public Evaluate newEvaluate(@RequestBody Evaluate newEvaluate) {
+		return service.newEvaluate(newEvaluate);
 	}
 
-	@PostMapping("/saveEvaluate")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void saveEvaluate(@ModelAttribute("evaluate") Evaluate theEvaluate) {
-		evaluateService.saveEvaluate(theEvaluate);
+	@GetMapping("get/{id}")
+	public Evaluate one(@PathVariable("id") int id) throws ResourceNotFoundException {
+			return service.one(id);
 	}
-
-	@GetMapping("/updateEvaluate")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void showFormForUpdate(@RequestParam("evaluateId") int theId, Model theModel) throws ResourceNotFoundException {
-		Evaluate theEvaluate = new Evaluate();
-		evaluateService.getEvaluate(theId);
-	}
-
-	@GetMapping("/delete")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void deleteEvaluate(@RequestParam("evaluateId") int theId) throws ResourceNotFoundException {
-		evaluateService.deleteEvaluate(theId);
-	}
-
+	
+	@PutMapping("/put/{id}")
+	public Evaluate replaceEvaluate(@RequestBody Evaluate newEvaluate, @PathVariable("id") int id) {
+	    return service.replaceEvaluate(newEvaluate, id);
+	  }
+	
+	 @DeleteMapping("/delete/{id}")
+	  void deleteEvaluate(@PathVariable int id) {
+	    service.deleteEvaluate(id);
+	  }
 }

@@ -2,17 +2,19 @@ package spring.service;
 
 import java.util.List;
 
+import org.springframework.validation.BindingResult;
+
 import spring.exception.ResourceNotFoundException;
 import spring.model.Banner;
 
 public interface BannerService {
 
-	public List<Banner> getBanners();
+	List<Banner> all();
 
-	public void saveBanner(Banner theBanner);
+	Banner newBanner(Banner newBanner, BindingResult result);
 
-	public Banner getBanner(int theId) throws ResourceNotFoundException;
+	Banner one(int id) throws ResourceNotFoundException;
 
-	public void deleteBanner(int theId) throws ResourceNotFoundException;
+	void deleteBanner(int id);
 
 }

@@ -7,12 +7,14 @@ import spring.model.Evaluate;
 
 public interface EvaluateService {
 
-	public List<Evaluate> getEvaluates();
+	List<Evaluate> all();
 
-	public void saveEvaluate(Evaluate theEvaluate);
+	Evaluate newEvaluate(Evaluate newEvaluate);
 
-	public Evaluate getEvaluate(int theId) throws ResourceNotFoundException;
+	Evaluate one(int id) throws ResourceNotFoundException;
 
-	public void deleteEvaluate(int theId) throws ResourceNotFoundException;
+	Evaluate replaceEvaluate(Evaluate newEvaluate, int id);
+
+	void deleteEvaluate(int id);
 
 }

@@ -1,79 +1,50 @@
-/**
- * 
- */
 package spring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.ResourceNotFoundException;
 import spring.model.Role;
-import spring.service.RoleServiceImpl;
-
-/**
- * @author Le Ngo Minh <br/>
- *
- *         Modified Date : Apr 25, 2019
- */
+import spring.service.RoleService;
 
 @RestController
 @RequestMapping("/api/role")
 public class RoleController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
-
 	@Autowired
-	private RoleServiceImpl roleService;
+	private RoleService service;
 
-	@GetMapping()
-//	@ResponseBody
-	public List<Role> listRoles() {
-
-		List<Role> roleList = new ArrayList<Role>();
-		roleList = roleService.getRoles();
-
-		return roleList;
+	@GetMapping("/all")
+	public List<Role> all() {
+		return service.all();
 	}
 
-	@GetMapping("/getRole")
-	public Role getRole(@RequestParam("roleId") int theId) throws ResourceNotFoundException {
-
-		Role role = new Role();
-		role = roleService.getRole(theId);
-
-		return role;
+	@PostMapping("/add")
+	public Role newRole(@RequestBody Role newRole) {
+		return service.newRole(newRole);
 	}
 
-	@PostMapping("/saveRole")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void saveRole(@ModelAttribute("role") Role theRole) {
-		roleService.saveRole(theRole);
+	@GetMapping("get/{id}")
+	public Role one(@PathVariable("id") int id) throws ResourceNotFoundException {
+			return service.one(id);
 	}
-
-	@GetMapping("/updateRole")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void showFormForUpdate(@RequestParam("roleId") int theId, Model theModel) throws ResourceNotFoundException {
-		Role theRole = new Role();
-		roleService.getRole(theId);
-	}
-
-	@GetMapping("/delete")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void deleteRole(@RequestParam("roleId") int theId) throws ResourceNotFoundException {
-		roleService.deleteRole(theId);
-	}
-
+	
+	@PutMapping("/put/{id}")
+	public Role replaceRole(@RequestBody Role newRole, @PathVariable("id") int id) {
+	    return service.replaceRole(newRole, id);
+	  }
+	
+	 @DeleteMapping("/delete/{id}")
+	  void deleteRole(@PathVariable int id) {
+	    service.deleteRole(id);
+	  }
 }

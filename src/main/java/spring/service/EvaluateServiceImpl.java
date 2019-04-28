@@ -14,30 +14,44 @@ import spring.repository.EvaluateRepository;
 public class EvaluateServiceImpl implements EvaluateService {
 
 	@Autowired
-	private EvaluateRepository evaluateRepository;
+	private EvaluateRepository repository;
 	
 	@Transactional
 	@Override
-	public List<Evaluate> getEvaluates() {
-		return evaluateRepository.findAll();
+	public List<Evaluate> all() {
+		return repository.findAll();
 	}
 
 	@Transactional
 	@Override
-	public void saveEvaluate(Evaluate theEvaluate) {
-		evaluateRepository.save(theEvaluate);
+	public Evaluate newEvaluate(Evaluate newEvaluate) {
+		return repository.save(newEvaluate);
 	}
 
 	@Transactional
 	@Override
-	public Evaluate getEvaluate(int id) throws ResourceNotFoundException {
-		return evaluateRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(id));
+	public Evaluate one(int id) throws ResourceNotFoundException {
+		return repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	@Transactional
 	@Override
-	public void deleteEvaluate(int theId) {
-		evaluateRepository.deleteById(theId);
+	public Evaluate replaceEvaluate(Evaluate newEvaluate, int id) {
+		return repository.findById(id)
+			      .map(evaluate -> {
+			        return repository.save(newEvaluate);
+			      })
+			      .orElseGet(() -> {
+			        newEvaluate.setEvaluateId(id);
+			        return repository.save(newEvaluate);
+			      });
 	}
+
+	@Transactional
+	@Override
+	public void deleteEvaluate(int id) {
+		repository.deleteById(id);
+	}
+
 }

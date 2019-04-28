@@ -7,12 +7,13 @@ import spring.model.Role;
 
 public interface RoleService {
 
-	public List<Role> getRoles();
+	List<Role> all();
 
-	public void saveRole(Role theRole);
+	Role newRole(Role newRole);
 
-	public Role getRole(int theId) throws ResourceNotFoundException;
+	Role one(int id) throws ResourceNotFoundException;
 
-	public void deleteRole(int theId) throws ResourceNotFoundException;
+	Role replaceRole(Role newRole, int id);
 
+	void deleteRole(int id);
 }

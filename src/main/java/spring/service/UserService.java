@@ -7,12 +7,14 @@ import spring.model.User;
 
 public interface UserService {
 
-	public List<User> getUsers();
+	List<User> all();
 
-	public void saveUser(User theUser);
+	User newUser(User newUser);
 
-	public User getUser(int theId) throws ResourceNotFoundException;
+	User one(int id) throws ResourceNotFoundException;
 
-	public void deleteUser(int theId) throws ResourceNotFoundException;
+	User replaceUser(User newUser, int id);
+
+	void deleteUser(int id);
 
 }

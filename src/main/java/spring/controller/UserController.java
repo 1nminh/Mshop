@@ -1,83 +1,50 @@
-/**
- * 
- */
 package spring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.ResourceNotFoundException;
 import spring.model.User;
-import spring.service.UserServiceImpl;
-
-/**
- * @author Le Ngo Minh <br/>
- *
- *         Modified Date : Apr 25, 2019
- */
+import spring.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService service;
 
-	@GetMapping()
-//	@ResponseBody
-	public List<User> listUsers() {
-
-		List<User> userList = new ArrayList<User>();
-		userList = userService.getUsers();
-
-		return userList;
+	@GetMapping("/all")
+	public List<User> all() {
+		return service.all();
 	}
 
-	@GetMapping("/getUser")
-	public User getUser(@RequestParam("userId") int theId) throws ResourceNotFoundException {
-
-		User user = new User();
-		user = userService.getUser(theId);
-
-		return user;
+	@PostMapping("/add")
+	public User newUser(@RequestBody User newUser) {
+		return service.newUser(newUser);
 	}
 
-	@PostMapping("/saveUser")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void saveUser(@ModelAttribute("user") User theUser) {
-		userService.saveUser(theUser);
+	@GetMapping("get/{id}")
+	public User one(@PathVariable("id") int id) throws ResourceNotFoundException {
+			return service.one(id);
 	}
-
-	@PutMapping("/update/{id}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void showFormForUpdate(@RequestBody User user, @PathVariable int id) throws ResourceNotFoundException {
-		User theUser = new User();
-		userService.getUser(id);
-	}
-
-	@DeleteMapping("/delete/{id}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void deleteUser(@PathVariable int id) throws ResourceNotFoundException {
-		userService.deleteUser(id);
-	}
-
+	
+	@PutMapping("/put/{id}")
+	public User replaceUser(@RequestBody User newUser, @PathVariable("id") int id) {
+	    return service.replaceUser(newUser, id);
+	  }
+	
+	 @DeleteMapping("/delete/{id}")
+	  void deleteUser(@PathVariable int id) {
+	    service.deleteUser(id);
+	  }
 }
