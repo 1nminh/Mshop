@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bigchaindb.builders.BigchainDbConfigBuilder;
+
 import capstone.p2plend.entity.Account;
 import capstone.p2plend.exception.AccountNotFoundException;
 import capstone.p2plend.repo.AccountRepository;
@@ -45,5 +47,9 @@ public class AccountController {
 	@DeleteMapping("/accounts/{id}")
 	void deleteAccount(@PathVariable Integer id) {
 		repository.deleteById(id);
+	}
+	
+	
+	void bigChainDB() {
 	}
 }
