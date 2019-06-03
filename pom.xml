@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>capstone</groupId>
-	<artifactId>p2p-lend</artifactId>
+	<artifactId>Mshop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>p2p-lend</name>
+	<name>Mshop</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>war</packaging>
 
